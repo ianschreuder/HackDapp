@@ -7,48 +7,6 @@ window.App = {
     this.loadAddresses();
   },
 
-  loadAddresses: function() {
-    for (i = 0; i < 2; i++) {
-      address = web3.eth.accounts[i];
-      $('#sideAffiliateList').append(`
-        <li class="nav-item">
-          <a class="nav-link" href="#" onClick="App.setAffiliateAddress('`+address+`')">` + address + `</a>
-        </li>
-      `);
-    } 
-  },
-
-  setAffiliateAddress: function(addy) {
-    AppState.affilliateAddress = addy;
-    web3.eth.getBalance(AppState.affilliateAddress, (e,r) => {
-      balance = web3.fromWei(r.toNumber(), 'ether')
-      AppState.sellerBalance = parseFloat(balance).toFixed(2);
-      $("#seller-address").text(AppState.affilliateAddress);
-      $("#seller-balance").text(AppState.sellerBalance);
-      $("#affiliateAddy").text(AppState.affilliateAddress);
-      $("#onaffiliate").show();
-      $("#ondashboard").hide();
-    });
-  },
-
-  createContract: function(amt) {
-    self = this;
-    AppState.escrowContract.new(AppState.buyerAddress, 
-       {
-         from: AppState.sellerAddress,
-         data: Settlement.bytecode,
-         gas: '2700000',
-         value: web3.toWei(amt, "ether")
-       },
-      (e, contract) => {
-        logError(e);
-        if (typeof contract.address !== 'undefined') {
-           console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-           AppState.escrowDeployed = contract;
-        }
-     });
-  }
-
 }
 
 
