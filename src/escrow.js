@@ -3,44 +3,31 @@ window.App = {
   startApp: function() {
     web3Check();
     // Define Contract factory
-    AppState.escrowContract = web3.eth.contract(EscrowDapp.abi);
+    AppState.escrowContract = web3.eth.contract(Settlement.abi);
     this.loadAddresses();
   },
 
   loadAddresses: function() {
-    web3.eth.accounts.forEach(function(address) {
-      str1 = `
+    for (i = 0; i < 2; i++) {
+      address = web3.eth.accounts[i];
+      $('#sideAffiliateList').append(`
         <li class="nav-item">
-          <a class="nav-link" href="#" onClick="App.setSellerAddress('`+address+`')">` + address + `</a>
+          <a class="nav-link" href="#" onClick="App.setAffiliateAddress('`+address+`')">` + address + `</a>
         </li>
-      `
-      str2 = `
-        <li class="nav-item">
-          <a class="nav-link" href="#" onClick="App.setBuyerAddress('`+address+`')">` + address + `</a>
-        </li>
-      `
-      $('#sideSellerList').append(str1);
-      $('#sideBuyerList').append(str2);
-    });
+      `);
+    } 
   },
 
-  setSellerAddress: function(addy) {
-    AppState.sellerAddress = addy;
-    web3.eth.getBalance(AppState.sellerAddress, (e,r) => {
+  setAffiliateAddress: function(addy) {
+    AppState.affilliateAddress = addy;
+    web3.eth.getBalance(AppState.affilliateAddress, (e,r) => {
       balance = web3.fromWei(r.toNumber(), 'ether')
       AppState.sellerBalance = parseFloat(balance).toFixed(2);
-      $("#seller-address").text(AppState.sellerAddress);
+      $("#seller-address").text(AppState.affilliateAddress);
       $("#seller-balance").text(AppState.sellerBalance);
-    });
-  },
-
-  setBuyerAddress: function(addy) {
-    AppState.buyerAddress = addy;
-    web3.eth.getBalance(AppState.buyerAddress, (e,r) => {
-      balance = web3.fromWei(r.toNumber(), 'ether')
-      AppState.buyerBalance = parseFloat(balance).toFixed(2);
-      $("#buyer-address").text(AppState.buyerAddress);
-      $("#buyer-balance").text(AppState.buyerBalance);
+      $("#affiliateAddy").text(AppState.affilliateAddress);
+      $("#onaffiliate").show();
+      $("#ondashboard").hide();
     });
   },
 
@@ -49,7 +36,7 @@ window.App = {
     AppState.escrowContract.new(AppState.buyerAddress, 
        {
          from: AppState.sellerAddress,
-         data: EscrowDapp.bytecode,
+         data: Settlement.bytecode,
          gas: '2700000',
          value: web3.toWei(amt, "ether")
        },
@@ -69,10 +56,10 @@ window.App = {
 window.AppState = {
   escrowContract: {},
   escrowDeployed: {},
-  sellerAddress: '',
-  sellerBalance: '',
+  vendorAddress: '',
   buyerAddress: '',
-  buyerBalance: ''
+  affilliateAddress: '',
+  amount: ''
 }
 
 
@@ -88,9 +75,9 @@ web3Check = () => { try {console.log(web3.eth.coinbase + " coinbase found")} cat
 
 
 // Contract Object
-EscrowDapp = {
-  abi: [ { "constant": false, "inputs": [ { "name": "buyer", "type": "address" } ], "name": "startEscrowWith", "outputs": [ { "name": "id", "type": "uint256" } ], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "id", "type": "uint256" } ], "name": "refund", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "id", "type": "uint256" } ], "name": "deposit", "outputs": [ { "name": "buyer", "type": "address" } ], "payable": true, "type": "function" }, { "constant": false, "inputs": [ { "name": "id", "type": "uint256" } ], "name": "approve", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "eId", "type": "uint256" } ], "name": "getSeller", "outputs": [ { "name": "seller", "type": "address" } ], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "id", "type": "uint256" } ], "name": "payOut", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "id", "type": "uint256" } ], "name": "abort", "outputs": [], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_a", "type": "address" } ], "name": "Approve", "type": "event" } ], 
-  bytecode: "0x6060604052341561000c57fe5b5b6104918061001c6000396000f300606060405236156100675763ffffffff60e060020a6000350416630805ed6c8114610069578063278ecde114610097578063b6b55f25146100ac578063b759f954146100d3578063d6a9de51146100e8578063da333ca614610117578063e50701f41461012c575bfe5b341561007157fe5b610085600160a060020a0360043516610141565b60408051918252519081900360200190f35b341561009f57fe5b6100aa60043561019b565b005b6100b7600435610217565b60408051600160a060020a039092168252519081900360200190f35b34156100db57fe5b6100aa600435610250565b005b34156100f057fe5b6100b7600435610335565b60408051600160a060020a039092168252519081900360200190f35b341561011f57fe5b6100aa600435610356565b005b341561013457fe5b6100aa6004356103a6565b005b600180548082018255600081815260208190526040902091820180548354600160a060020a03868116600160a060020a031992831617865560a060020a61ffff0219339190911691909216171690559081905b5050919050565b6000818152602081905260409020600181015460a060020a900460ff161580156101d15750600181015460a860020a900460ff16155b156102105780546002820154604051600160a060020a039092169181156108fc0291906000818181858888f1935050505015610210576102108261044a565b5b5b5b5050565b60008181526020819052604090208054600160a060020a03191633600160a060020a038116919091178255346002830155905b50919050565b604051600090600160a060020a033316907f96bfcd230b7ff6b6fae05762edc541f5cb32225984541cf1a9c0b04bac427a5e908390a2506000818152602081905260409020805433600160a060020a03908116911614156102c85760018101805460a060020a60ff02191660a060020a1790556102fa565b600181015433600160a060020a03908116911614156102fa5760018101805460a860020a60ff02191660a860020a1790555b5b600181015460a860020a900460ff1680156103215750600181015460a060020a900460ff165b156102105761021082610356565b5b5b5050565b600081815260208190526040902060010154600160a060020a03165b919050565b6000818152602081905260408082206001810154600282015492519193600160a060020a039091169280156108fc02929091818181858888f193505050501561021057600060028201555b5b5050565b6000818152602081905260409020805433600160a060020a03908116911614156103e15760018101805460a060020a60ff021916905561040d565b600181015433600160a060020a039081169116141561040d5760018101805460a860020a60ff02191690555b5b600181015460a860020a900460ff161580156104365750600181015460a060020a900460ff16155b15610210576102108261019b565b5b5b5050565b600081815260208190526040812060028101919091555b50505600a165627a7a72305820ac8949cb17b4285f5756b56c2723c2651f6440fb912ba7cea95cef615f8a0d8c0029"
+Settlement = {
+  abi: [ { "constant": false, "inputs": [], "name": "approve", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "vendor", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "balances", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "customer", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "vend", "type": "address" }, { "name": "cust", "type": "address" } ], "name": "setup", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "abort", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "remaining", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "refund", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "vendorApprove", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "feeAmount", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "clickbankEscrow", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "customerApprove", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "payOut", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "deposit", "outputs": [], "payable": true, "type": "function" }, { "constant": false, "inputs": [], "name": "fee", "outputs": [], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" } ], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "from", "type": "address" }, { "indexed": false, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" } ], "name": "Sent", "type": "event" } ], 
+  bytecode: "0x606060405260038054600160a060020a03191633600160a060020a0316179055341561002757fe5b5b61060b806100376000396000f300606060405236156100bf5763ffffffff60e060020a60003504166312424e3f81146100c15780631385a6f2146100d357806327e235e3146100ff5780632804b2c01461012d5780632d34ba791461015957806335a063b41461017d57806355234ec01461018f578063590e1ae3146101b1578063614f1cb2146101c357806369e15404146101e75780638d93369c1461020957806399b1b35414610235578063c205240314610259578063d0e30db01461026b578063ddca3f4314610275575bfe5b34156100c957fe5b6100d1610287565b005b34156100db57fe5b6100e361031b565b60408051600160a060020a039092168252519081900360200190f35b341561010757fe5b61011b600160a060020a036004351661032a565b60408051918252519081900360200190f35b341561013557fe5b6100e361033c565b60408051600160a060020a039092168252519081900360200190f35b341561016157fe5b6100d1600160a060020a036004358116906024351661034b565b005b341561018557fe5b6100d1610398565b005b341561019757fe5b61011b610422565b60408051918252519081900360200190f35b34156101b957fe5b6100d1610428565b005b34156101cb57fe5b6101d3610462565b604080519115158252519081900360200190f35b34156101ef57fe5b61011b610472565b60408051918252519081900360200190f35b341561021157fe5b6100e3610478565b60408051600160a060020a039092168252519081900360200190f35b341561023d57fe5b6101d3610487565b604080519115158252519081900360200190f35b341561026157fe5b6100d1610497565b005b6100d16104e6565b005b341561027d57fe5b6100d1610562565b005b60025433600160a060020a03908116911614156102b9576003805460a860020a60ff02191660a860020a1790556102e7565b60015433600160a060020a03908116911614156102e7576003805460a060020a60ff02191660a060020a1790555b5b60035460a060020a900460ff16801561030a575060035460a860020a900460ff165b1561031757610317610562565b5b5b565b600154600160a060020a031681565b60006020819052908152604090205481565b600254600160a060020a031681565b60035433600160a060020a03908116911614156103935760028054600160a060020a03808416600160a060020a03199283161790925560018054928516929091169190911790555b5b5050565b60025433600160a060020a03908116911614156103c4576003805460a860020a60ff02191690556103ec565b60015433600160a060020a03908116911614156103ec576003805460a060020a60ff02191690555b5b60035460a060020a900460ff16158015610411575060035460a860020a900460ff16155b1561031757610317610428565b5b5b565b60045481565b60035460a860020a900460ff1615801561044c575060035460a060020a900460ff16155b1561031757600254600160a060020a0316ff5b5b565b60035460a060020a900460ff1681565b60055481565b600354600160a060020a031681565b60035460a860020a900460ff1681565b600154600454604051600160a060020a039092169181156108fc0291906000818181858888f193505050501561031757600254600160a060020a03166000908152602081905260408120555b5b565b60025433600160a060020a039081169116146105025760006000fd5b600254600160a060020a03908116600090815260208181526040918290208054349081019091558251908152915133909316927fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c9281900390910190a25b565b600254600160a060020a03166000908152602081905260409020546064905b046005819055600254600160a060020a0390811660009081526020819052604080822054849003600455600354905192169280156108fc02929091818181858888f1935050505015156105d45760006000fd5b610317610497565b5b5600a165627a7a72305820fa1918b48efe63d76d5451bee7905b436b99b68b7154c1ec161a3bec4efd61e60029"
 }
 
 
@@ -104,7 +91,7 @@ window.addEventListener('load', function() {
   } else {
     console.log('No web3? You should consider trying MetaMask!')
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    window.web3 = new Web3(new Web3.providers.HttpProvider("http://10.30.99.22:8545"));
   }
   setTimeout( () => App.startApp(), 300 );
 });
