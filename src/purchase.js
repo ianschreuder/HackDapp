@@ -8,11 +8,26 @@ window.App = {
   },
 
   parseAddresses: function(addy) {
-    var URI = require('urijs');
+    var $uri = new URI(); 
+    var params = $uri.search(true)
 
-    $("#vendor").text(URI);
-    $("#affiliate").text(AppState.affilliateAddress);
+    $("#vendor").val(params['vendor']);
+    $("#affiliate").val(params['affiliate']);
+    $("#balance").val(params['balance']);
+    $("#item-balance").text(params['balance']);
 
+    AppState.vendorAddress = params['vendor'];
+    AppState.buyerAddress = params['buyer'];
+    AppState.affilliateAddress = params['affiliate'];
+    AppState.balance = params['balance'];
+
+    $("#vendor").val(params['vendor']);
+    $("#affiliate").val(params['affiliate']);
+    $("#item-price").text(params['balance']);
+
+  },
+
+  submitContract: function() {
   },
 
 }
