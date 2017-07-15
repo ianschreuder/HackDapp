@@ -9,10 +9,7 @@ body {
   margin-top:0px;
 
 }
-/*{     /* Test Borders
-border: 0px dashed blue;
- 
-}*/
+
 #header{
     position: fixed;
     display: block;
