@@ -1,5 +1,4 @@
 pragma solidity ^0.4.8;
-pragma solidity ^0.4.8;
 contract Settlement{
 
 	mapping (address => uint) public balances;
@@ -17,12 +16,10 @@ contract Settlement{
 	event Deposit(address indexed from, uint amount);
 	event Sent(address from, address to, uint amount);
 
-	function setup(address vend, address cust, address affi){
-		if(msg.sender == exchange){
-			buyer = cust;
-			vendor = vend;
-			affiliate = affi;
-		}
+	function Settlement(address vend, address cust, address affi) payable {
+		buyer = cust;
+		vendor = vend;
+		affiliate = affi;
 	}
 
 	function approve(){
