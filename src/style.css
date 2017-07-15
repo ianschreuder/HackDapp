@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+*{
+	border: 1px dashed;
+}
+
+
+background {
+	color: white;
+}
+
+body{
+	font: "Karla", sans-serif;
+}
+
+h2{
+	border-bottom: 2px dotted #ababab;
+}
+
+.price {
+	display: inline-block;
+	font-size: 2.5em;
+	line-height: 1em;
+	text-align: center;
+	width: 30%;
+	height: 30%;
+	padding-right: 10%;
+	
+	}
+
+.ethcurreny{
+	display: inline-block;
+	left: -66px;
+	top: 16px;
+}
+
+.details{
+	display: inline-block;
+	float: bottom;
+	
+}
+
+.logo{
+	width: 600px;
+	height: 58px;
+}
+
+/*
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+*/
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+.pricetop p {
+	display: block;
+	font-style: bold;
+    color: #878787;
+} 
