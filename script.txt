@@ -1,0 +1,70 @@
+Demo:
+
+Success - payout:
+
+1. start testRPC and show accounts.
+	web3.fromWei(web3.toDecimal(web3.eth.getBalance(web3.eth.accounts[0]), 'ether'));
+ 
+2. exchange = web3.eth.accounts[0]
+
+3. vendor = web3.eth.accounts[1]
+	buyer = web3.eth.accounts[2]
+
+4. web3.fromWei(web3.toDecimal(web3.eth.getBalance(clickbankEscrow), 'ether'));
+
+5. web3.fromWei(web3.toDecimal(web3.eth.getBalance(clickbankEscrow), 'ether'));
+
+6. vendor = web3.eth.accounts[1]
+7. buyer = web3.eth.accounts[2]
+8. affiliate = web3.eth.accounts[3]
+
+7. Settlement.deployed().then(function(instance){settlement=instance})
+
+8. web3.fromWei(web3.toDecimal(web3.eth.getBalance(exchange), 'ether'));
+
+9. web3.fromWei(web3.toDecimal(web3.eth.getBalance(buyer), 'ether'));
+
+10. web3.fromWei(web3.toDecimal(web3.eth.getBalance(vendor), 'ether'));
+
+11. web3.fromWei(web3.toDecimal(web3.eth.getBalance(affiliate), 'ether'));
+
+
+12. web3.fromWei(web3.toDecimal(web3.eth.getBalance(buyer), 'ether'));
+
+14. web3.fromWei(web3.toDecimal(web3.eth.getBalance(vendor), 'ether'));
+
+15. web3.fromWei(web3.toDecimal(web3.eth.getBalance(clickbankEscrow), 'ether'));
+
+16. settlement.setup(vendor, buyer, affiliate)
+
+16. settlement.deposit(affiliate, {from: buyer, value: web3.toWei(10, 'ether')})
+
+17. settlement.approve(affiliate,{ from: vendor }) 
+settlement.approve(affiliate,{ from: buyer }) 
+
+18. settlement.approve({ from: buyer })
+
+19. web3.fromWei(web3.toDecimal(web3.eth.getBalance(buyer), 'ether'));
+
+20. web3.fromWei(web3.toDecimal(web3.eth.getBalance(vendor), 'ether'));
+
+21. web3.fromWei(web3.toDecimal(web3.eth.getBalance(clickbankEscrow), 'ether'));
+
+
+22. shutdown testRpc
+
+Abort - refund
+
+1. start testRPC again
+2. repeat above
+3. abort
+
+
+Coin
+
+ PipelineCoin.deployed().then(function(instance){pipelineCoin=instance})
+ 
+
+
+
+
