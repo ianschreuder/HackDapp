@@ -4,24 +4,36 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
-  background-color: #DEDEDE;
+  padding-top: 0px;
+  background-color: #CCCCCC;
+  margin-top:0px;
 
 }
 *{
-border: 1px dashed blue;
+border: 0px dashed blue;
 
 }
-
+#header{
+    position: fixed;
+    display: block;
+    background-color: #CCCCCC;
+    width: 100%;
+    margin-top:0px;
+}
 
 #carImg{
 height: 300px;
 width: 500px;
 border: 1px solid black;
 border-radius: 5%;
+margin-top: 150px;
 
 }
+#logo{
+height: 75px;
+display: block;
 
+}
 #inputForm{
 text-align: center;
 display:inline-block;
@@ -38,14 +50,17 @@ padding-left:100px;
 padding-left: 100px;
 border-top: 2px solid black;
 border-bottom: 2px solid black;
-
+background-color: #E6E6E6;
 
 }
 #navbar{
 height:50px;
+width: 100%;
 background-color:black;
 border: 2px solid darkgray;
-
+position: fixed;
+display: block;
+margin-top: 70px;
 }
 acct{
     font-size: 24px;
