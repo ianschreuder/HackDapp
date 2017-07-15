@@ -53,15 +53,15 @@ window.App = {
       b = AppState.affiliateAproductAPrice;
       c = AppState.affiliateAproductB;
       d = AppState.affiliateAproductBPrice;
-      $("#affiliateLink-0").text("http://10.30.99.22:8545/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
-      $("#affiliateLink-1").text("http://10.30.99.22:8545/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
+      $("#affiliateLink-0").text("http://10.30.99.22:8545/src/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
+      $("#affiliateLink-1").text("http://10.30.99.22:8545/src/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
     } else {
       a = AppState.affiliateBproductA;
       b = AppState.affiliateBproductAPrice;
       c = AppState.affiliateBproductB;
       d = AppState.affiliateBproductBPrice;
-      $("#affiliateLink-0").text("http://10.30.99.22:8545/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
-      $("#affiliateLink-1").text("http://10.30.99.22:8545/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
+      $("#affiliateLink-0").text("http://10.30.99.22:8545/src/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
+      $("#affiliateLink-1").text("http://10.30.99.22:8545/src/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
     }
   }
 
