@@ -22,7 +22,7 @@
       <span class="navbar-brand">Yet Another Dashboard</span>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto flex-column">
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <p class="nav-link">Seller Address: <span id="seller-address"></span></p>
           </li>
@@ -30,14 +30,6 @@
             <p class="nav-link">Seller Balance: <span id="seller-balance"></span></p>
           </li>
         </ul> 
-        <ul class="navbar-nav mr-auto flex-column">
-          <li class="nav-item">
-            <p class="nav-link">Buyer Address: <span id="buyer-address"></span></p>
-          </li>
-          <li class="nav-item">
-            <p class="nav-link">Seller Balance: <span id="buyer-balance"></span></p>
-          </li>
-        </ul>
       </div>
     </nav>
 
@@ -45,51 +37,48 @@
     <div class="container-fluid">
       <div class="row">
         <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-          <ul class="nav nav-pills flex-column" id="sideSellerList">
+          <ul class="nav nav-pills flex-column" id="sideAffiliateList">
             <li class="nav-item">
-              <span class="nav-link active">Seller Addresses</span>
-            </li>
-          </ul>
-          <ul class="nav nav-pills flex-column" id="sideBuyerList">
-            <li class="nav-item">
-              <span class="nav-link active">Buyer Addresses</span>
+              <span class="nav-link active">I am Affliate:</span>
             </li>
           </ul>
         </nav>
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-          <h1>Dashboard</h1>
+          <div id="ondashboard">
+            <h1> Hi Everyone</h1>
+          </div>
 
-          <section class="row text-center placeholders">
-            <div class="col-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <div class="text-muted">Some Graphic?</div>
+          <div id="onaffiliate">
+            <h1>Product Page for: <span id="affiliateAddy"></span></h1>
+
+            <h2>Products</h2>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#id</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Your Link!</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0</td>
+                    <td>Computer</td>
+                    <td>1 eth</td>
+                    <td id="affiliateLink-0"></td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>Computer</td>
+                    <td>1 eth</td>
+                    <td id="affiliateLink-1"></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </section>
-
-          <h2>Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </main>
       </div>
