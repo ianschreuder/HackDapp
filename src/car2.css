@@ -1,0 +1,73 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  background-color: #DEDEDE;
+
+}
+*{
+border: 0px dashed blue;
+
+}
+
+
+#carImg{
+height: 300px;
+width: 500px;
+border: 1px solid black;
+
+}
+
+#inputForm{
+width: 200px;
+display:inline-block;
+
+}
+#image{
+display:inline;
+width: 600px;
+display:inline-block;
+padding-left:100px;
+
+}
+#navbar{
+height:50px;
+background-color:black;
+border: 2px solid darkgray;
+
+}
+acct{
+    font-size: 24px;
+}
+/*
+ * Typography
+ */
+
+h1 {
+  margin-bottom: 20px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #eee;
+  font-family: Garamond, serif;
+  font-size: 40px;
+}
+p{
+font-size: 24px;
+
+}
+a{
+text-decoration:none;
+
+}
+#contractButton{
+font-size: 40px;
+font-style: bold;
+
+}
+#tagline{
+font-family: cursive;
+text-align: center;
+
+}
