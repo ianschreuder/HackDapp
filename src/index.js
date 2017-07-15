@@ -8,14 +8,27 @@ window.App = {
   },
 
   loadAddresses: function() {
-    for (i = 0; i < 2; i++) {
+    for (i = 4; i < 6; i++) {
       address = web3.eth.accounts[i];
       $('#sideAffiliateList').append(`
         <li class="nav-item">
           <a class="nav-link" href="#" onClick="App.setAffiliateAddress('`+address+`')">` + address + `</a>
         </li>
       `);
-    } 
+    };
+
+    AppState.affiliateA = web3.eth.accounts[4];
+    AppState.affiliateAproductA = web3.eth.accounts[1];
+    AppState.affiliateAproductB = web3.eth.accounts[2];
+    AppState.affiliateAproductAPrice = 75;
+    AppState.affiliateAproductBPrice = 50;
+
+    AppState.affiliateB = web3.eth.accounts[5];
+    AppState.affiliateBproductA = web3.eth.accounts[1];
+    AppState.affiliateBproductB = web3.eth.accounts[2];
+    AppState.affiliateBproductAPrice = 75;
+    AppState.affiliateBproductBPrice = 50;
+
   },
 
   setAffiliateAddress: function(addy) {
@@ -23,30 +36,33 @@ window.App = {
     web3.eth.getBalance(AppState.affilliateAddress, (e,r) => {
       balance = web3.fromWei(r.toNumber(), 'ether')
       AppState.sellerBalance = parseFloat(balance).toFixed(2);
-      $("#seller-address").text(AppState.affilliateAddress);
-      $("#seller-balance").text(AppState.sellerBalance);
-      $("#affiliateAddy").text(AppState.affilliateAddress);
-      $("#onaffiliate").show();
-      $("#ondashboard").hide();
     });
+
+    $("#seller-address").text(AppState.affilliateAddress);
+    $("#seller-balance").text(AppState.sellerBalance);
+    $("#affiliateAddy").text(AppState.affilliateAddress);
+    $("#onaffiliate").show();
+    $("#ondashboard").hide();
+
+    this.injectLinks(addy);
   },
 
-  createContract: function(amt) {
-    self = this;
-    AppState.escrowContract.new(AppState.buyerAddress, 
-       {
-         from: AppState.sellerAddress,
-         data: Settlement.bytecode,
-         gas: '2700000',
-         value: web3.toWei(amt, "ether")
-       },
-      (e, contract) => {
-        logError(e);
-        if (typeof contract.address !== 'undefined') {
-           console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-           AppState.escrowDeployed = contract;
-        }
-     });
+  injectLinks: function(addy) {
+    if (addy == AppState.affiliateA) {
+      a = AppState.affiliateAproductA;
+      b = AppState.affiliateAproductAPrice;
+      c = AppState.affiliateAproductB;
+      d = AppState.affiliateAproductBPrice;
+      $("#affiliateLink-0").text("http://10.30.99.22:8545/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
+      $("#affiliateLink-1").text("http://10.30.99.22:8545/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
+    } else {
+      a = AppState.affiliateBproductA;
+      b = AppState.affiliateBproductAPrice;
+      c = AppState.affiliateBproductB;
+      d = AppState.affiliateBproductBPrice;
+      $("#affiliateLink-0").text("http://10.30.99.22:8545/purchase.html?vendor="+a+"&price="+b+"&affiliate="+addy);
+      $("#affiliateLink-1").text("http://10.30.99.22:8545/purchase.html?vendor="+c+"&price="+d+"&affiliate="+addy);
+    }
   }
 
 }
@@ -59,7 +75,19 @@ window.AppState = {
   vendorAddress: '',
   buyerAddress: '',
   affilliateAddress: '',
-  amount: ''
+  amount: '',
+
+  affiliateA: '',
+  affiliateAproductA: '',
+  affiliateAproductB: '',
+  affiliateAproductAPrice: '',
+  affiliateAproductBPrice: '',
+
+  affiliateB: '',
+  affiliateBproductA: '',
+  affiliateBproductB: '',
+  affiliateBproductAPrice: '',
+  affiliateBproductBPrice: ''
 }
 
 
