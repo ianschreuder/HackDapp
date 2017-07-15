@@ -1,9 +1,9 @@
 @charset "UTF-8";
-
+/*
 *{
 	border: 1px dashed;
 }
-
+*/
 
 background {
 	color: white;
@@ -20,11 +20,8 @@ h2{
 .price {
 	display: inline-block;
 	font-size: 2.5em;
-	line-height: 1em;
 	text-align: center;
-	width: 30%;
-	height: 30%;
-	padding-right: 10%;
+	height: 10%;
 	
 	}
 
@@ -86,4 +83,12 @@ li a:hover {
 	display: block;
 	font-style: bold;
     color: #878787;
-} 
+}
+
+.productdesc {
+	width: 852px;
+}
+
+.prodimage img{
+	width: 70%;
+}
