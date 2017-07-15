@@ -2,64 +2,78 @@ pragma solidity ^0.4.8;
 pragma solidity ^0.4.8;
 contract Settlement{
 
-	mapping (address => uint) public balances;
+	// mapping (address => uint) public balances;
+	address public exchangeEscrow = msg.sender;
 
-	address public vendor;
-	address public customer;
-	address public clickbankEscrow = msg.sender;
-	bool public vendorApprove;
-	bool public customerApprove;
-	uint public remaining;
-	uint public feeAmount;
+	struct Affiliate {
+		address vendor;
+		address buyer;
+		uint balance;
+		bool vendorApprove;
+		bool buyerApprove;
+		uint remaining;
+		uint feeAmount;
+	}
+
+	mapping(address => Affiliate) public affiliates;
+
+	// address public vendor;
+	// address public buyer;
+	// address public exchangeEscrow = msg.sender;
+	// bool public vendorApprove;
+	// bool public buyerApprove;
+	// uint public remaining;
+	// uint public feeAmount;
 
 	event Deposit(address indexed from, uint amount);
 	event Sent(address from, address to, uint amount);
 
-	function setup(address vend, address cust){
-		if(msg.sender == clickbankEscrow){
-			customer = cust;
-			vendor = vend;
+	function setup(address vend, address cust, address affiliate){
+		if(msg.sender == exchangeEscrow){
+			affiliates[affiliate].buyer = cust;
+			affiliates[affiliate].vendor = vend;
 		}
 	}
 
-	function approve(){
-		if(msg.sender == customer) customerApprove = true;
-		else if (msg.sender == vendor) vendorApprove = true;
-		if (vendorApprove && customerApprove) fee(); 
+	function approve(address affiliate){
+		if(msg.sender == affiliates[affiliate].buyer) affiliates[affiliate].buyerApprove = true;
+		else if (msg.sender == affiliates[affiliate].vendor) affiliates[affiliate].vendorApprove = true;
+		if (affiliates[affiliate].vendorApprove && affiliates[affiliate].buyerApprove) fee(affiliate); 
 	}
 
-	function abort(){
-		if(msg.sender == customer) customerApprove = false;
-		else if (msg.sender == vendor) vendorApprove = false;
-		if(!vendorApprove && !customerApprove) refund();
+	function abort(address affiliate){
+		if(msg.sender == affiliates[affiliate].buyer) affiliates[affiliate].buyerApprove = false;
+		else if (msg.sender == affiliates[affiliate].vendor) affiliates[affiliate].vendorApprove = false;
+		if(!affiliates[affiliate].vendorApprove && !affiliates[affiliate].buyerApprove) refund(affiliate);
 	}
 
-	function payOut(){
-		if (vendor.send(remaining)) balances[customer] = 0;
+	function payOut(address affiliate){
+		if (affiliates[affiliate].vendor.send(affiliates[affiliate].remaining)) affiliates[affiliate].balance = 0;
 	}
 
-	function deposit() payable {
-		if (msg.sender != customer) throw;
-		balances[customer] += msg.value;
+	function deposit(address affiliate) payable {
+		if (msg.sender != affiliates[affiliate].buyer) throw;
+		affiliates[affiliate].balance += msg.value;
 		Deposit(msg.sender, msg.value);
 	}
 
 	function killContract() internal {
-		// kills contract and returns fund to customer
-		selfdestruct(clickbankEscrow);
+		// kills contract and returns fund to buyer
+		selfdestruct(exchangeEscrow);
 	}
 
-	function refund(){
-		// send money back to customer if both parties agree contract is void
-		if(customerApprove == false && vendorApprove == false) selfdestruct(customer);
+	function refund(address affiliate){
+		// send money back to buyer if both parties agree contract is void
+		if(affiliates[affiliate].buyerApprove == false && affiliates[affiliate].vendorApprove == false) 
+			selfdestruct(affiliates[affiliate].buyer);
 	}
 
-	function fee(){
-		feeAmount = balances[customer] / 100;
-		remaining = balances[customer] - feeAmount;
-		if (!clickbankEscrow.send(feeAmount)) // 1% fee
+	function fee(address affiliate){
+		affiliates[affiliate].feeAmount = affiliates[affiliate].balance / 100;
+		affiliates[affiliate].remaining = affiliates[affiliate].balance - affiliates[affiliate].feeAmount;
+		if (!exchangeEscrow.send(affiliates[affiliate].feeAmount)) // 1% fee
 			throw; 
-		payOut();
+		payOut(affiliate);
 	}
 
 }
