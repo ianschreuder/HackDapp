@@ -9,7 +9,7 @@ body {
 
 }
 *{
-border: 0px dashed blue;
+border: 1px dashed blue;
 
 }
 
@@ -18,19 +18,27 @@ border: 0px dashed blue;
 height: 300px;
 width: 500px;
 border: 1px solid black;
+border-radius: 5%;
 
 }
 
 #inputForm{
-width: 200px;
+text-align: center;
 display:inline-block;
 
 }
 #image{
-display:inline;
+
 width: 600px;
 display:inline-block;
 padding-left:100px;
+
+}
+#specs{
+padding-left: 100px;
+border-top: 2px solid black;
+border-bottom: 2px solid black;
+
 
 }
 #navbar{
@@ -53,21 +61,50 @@ h1 {
   font-family: Garamond, serif;
   font-size: 40px;
 }
+
+h2{
+    padding-left: 100px;
+    color:white;
+    font-style: italic;
+    font-weight: bold;
+}
+h3{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 24px;
+}
 p{
 font-size: 24px;
 
 }
 a{
 text-decoration:none;
+color: black;
 
 }
+h6{
+    text-align:center;
+}
+li{
+    font-size: 20px;
+    font-family: Garamond, serif;
+    font-style: italic;
+}
 #contractButton{
+padding-left: 10px;
+padding-right: 10px;
 font-size: 40px;
-font-style: bold;
+font-weight: bold;
+font-family: Verdana;
+background-color: darkred;
+border-radius: 5%;
+border: 2px solid black;
+
 
 }
 #tagline{
 font-family: cursive;
 text-align: center;
+
 
 }
