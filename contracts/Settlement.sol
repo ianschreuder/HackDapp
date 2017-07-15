@@ -13,17 +13,10 @@ contract Settlement{
 		bool buyerApprove;
 		uint remaining;
 		uint feeAmount;
+		uint affiliateCommission;
 	}
 
 	mapping(address => Affiliate) public affiliates;
-
-	// address public vendor;
-	// address public buyer;
-	// address public exchangeEscrow = msg.sender;
-	// bool public vendorApprove;
-	// bool public buyerApprove;
-	// uint public remaining;
-	// uint public feeAmount;
 
 	event Deposit(address indexed from, uint amount);
 	event Sent(address from, address to, uint amount);
@@ -70,9 +63,13 @@ contract Settlement{
 
 	function fee(address affiliate){
 		affiliates[affiliate].feeAmount = affiliates[affiliate].balance / 100;
-		affiliates[affiliate].remaining = affiliates[affiliate].balance - affiliates[affiliate].feeAmount;
+		affiliates[affiliate].balance = affiliates[affiliate].balance - affiliates[affiliate].feeAmount;
+		affiliates[affiliate].affiliateCommission = affiliates[affiliate].balance / 2;
+		affiliates[affiliate].remaining = affiliates[affiliate].balance - affiliates[affiliate].affiliateCommission;
 		if (!exchangeEscrow.send(affiliates[affiliate].feeAmount)) // 1% fee
 			throw; 
+		if (!affiliate.send(affiliates[affiliate].affiliateCommission)) // 1% fee
+			throw; 	
 		payOut(affiliate);
 	}
 
